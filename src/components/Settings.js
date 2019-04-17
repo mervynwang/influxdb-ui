@@ -23,7 +23,7 @@ class Settings extends Component {
     };
   }
 
-  componentDidMount(){    
+  componentDidMount(){
       //  Add store listeners ... and notify ME of changes
       this.settingsListener = SettingsStore.addListener(this._onChange);
   }
@@ -34,7 +34,7 @@ class Settings extends Component {
   }
 
   render() {
-    
+
     return (
       <div>
         <Navbar {...this.props} />
@@ -42,12 +42,12 @@ class Settings extends Component {
         <div className="container">
           <div className="row">
             <div className="col">
-              
+
                 <p className="lead text-muted settings-header">Servers</p>
                 <div className="rounded settings-group">
 
                   <div className="settings-explanation">
-                    This is a list of InfluxDB servers you can connect to. 
+                    This is a list of InfluxDB servers you can connect to.
                   </div>
 
                   <table className="table table-responsive">
@@ -74,7 +74,7 @@ class Settings extends Component {
                         <label className="sr-only" htmlFor="txtAddName">Server name</label>
                         <input type="text" autoFocus ref={(input) => { this.addName = input; }} className="form-control" id="txtAddName" value={this.state.AddServerName} onChange={this._onAddServerNameChange} placeholder="Dev server" required/>
                       </div>
-                      
+
                       <div className="col">
                         <label className="sr-only" htmlFor="txtAddUrl">Server url</label>
                         <input type="url" className="form-control" id="txtAddUrl" value={this.state.AddServerUrl} onChange={this._onAddServerUrlChange} placeholder="http://dev.server:8086" required/>
@@ -98,7 +98,7 @@ class Settings extends Component {
 
                 </div>
 
-              
+
 
             </div>
           </div>
@@ -135,7 +135,7 @@ class Settings extends Component {
     e.preventDefault();
 
     //  Format the url
-    //  See https://gist.github.com/jlong/2428561 for more information    
+    //  See https://gist.github.com/jlong/2428561 for more information
     let parser = document.createElement('a');
     parser.href = this.state.AddServerUrl;
 
@@ -146,12 +146,13 @@ class Settings extends Component {
       path = parser.pathname + parser.hash + parser.search;
     }
 
-    let serverUrl = `${protocol}//${parser.hostname}:${port}${path}`;
+    let serverUrl = (protocol == 'https')? `${protocol}//${parser.hostname}${path}` : `${protocol}//${parser.hostname}:${port}${path}`;
+
 
     //  Add the server
     console.log("Adding server..." + this.state.AddServerName);
     SettingsAPI.addServer(this.state.AddServerName, serverUrl, this.state.AddServerUsername, this.state.AddServerPassword);
-    
+
     //  If we have a current server:
     if(SettingsStore.haveCurrentServer()){
       //  Get the current server:
